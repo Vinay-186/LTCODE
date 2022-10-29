@@ -10,7 +10,8 @@ public:
             b.push(nums2[i]);
         }
         vector<int> res;
-        for(int i = 0 ;i < nums1.size(); i++)
+        n = nums1.size();
+        for(int i = 0 ;i < n; i++)
             res.push_back(rec[nums1[i]]);
         return res;
     }
