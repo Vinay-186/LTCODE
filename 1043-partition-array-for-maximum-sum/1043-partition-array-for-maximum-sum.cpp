@@ -4,10 +4,13 @@ public:
         int n = arr.size();
         vector<int> dp(n+1,0);
         for(int ind = n-1; ind >= 0; ind--){
-            int ans = INT_MIN;
-            for(int j = ind; j < ind + k && j < n; j++)
-                ans = max(ans, (*max_element(arr.begin()+ind, arr.begin() + j + 1)) * (j - ind + 1) + dp[j+1]);
-            dp[ind] = ans;
+            int maxVal = 0, maxSum = 0;
+            for(int j = ind; j < min(ind+k,n); j++){
+                maxVal = max(maxVal,arr[j]);
+                int sum = maxVal * (j - ind + 1) + dp[j+1];
+                maxSum = max(maxSum, sum);
+            }
+            dp[ind] = maxSum;
         }
         return dp[0];
     }
