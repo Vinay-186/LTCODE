@@ -1,19 +1,13 @@
 class Solution {
 public:
-    set<string> dict;
-    int sz;
-    vector<int> dp;
-    bool w(string s,int ind){
-        if(ind == sz) return true;
-        if(dp[ind] != -1) return dp[ind];
-        for(int i = ind; i < sz; i++) if(dict.find(s.substr(ind, i-ind + 1)) != dict.end()) if(w(s,i+1)) return dp[ind] = true;
-        return dp[ind] = false;
-    }
     bool wordBreak(string s, vector<string>& word) {
+        set<string> dict;
         dict.insert(word.begin(), word.end());
-        sz = s.size();
+        int sz = s.size();
         if(dict.find(s) != dict.end()) return true;
-        dp.resize(sz,-1);
-        return w(s,0);
+        vector<int> dp(sz+1,0);
+        dp[sz] = 1;
+        for(int i = sz - 1; i >= 0; i--)for(int j = i; j < sz; j++)if(dict.find(s.substr(i,j-i+1)) != dict.end())if(dp[j+1] == 1) dp[i] = 1;
+        return dp[0];
     }
 };
