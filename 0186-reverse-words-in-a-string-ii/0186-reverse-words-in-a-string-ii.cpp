@@ -1,8 +1,5 @@
 class Solution {
 public:
-    void rev(vector<char>& s, int i , int j){
-        while(i < j) swap(s[i++], s[j--]);
-    }
     void reverseWords(vector<char>& s) {
         reverse(s.begin(), s.end());
         int n = s.size();
@@ -10,10 +7,8 @@ public:
             if(s[t] != ' '){
                 int i = t;
                 int j = t+1;
-                while(j < n && s[j] != ' '){
-                    j++;
-                }
-                rev(s,i,j-1);
+                while(j < n && s[j] != ' ') j++;
+                reverse(s.begin() + i, s.begin() + j);
                 t = j;
             }
         }
