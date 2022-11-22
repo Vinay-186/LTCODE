@@ -1,16 +1,12 @@
 class Solution {
 public:
     int numSquares(int n) {
+       int m = 1e8;
        int sz = pow(n, 0.5);
-       vector<int> prev(n+1, 1e8), cur(n+1, 1e8);
+       vector<int> prev(n+1, m), cur(n+1, m);
        prev[n] = 0;
        for(int i = 1; i <= sz; i++){
-           for(int j = n; j >= 0; j--){
-               int include = 1e8;
-               if(j + i*i <= n)include = 1 + cur[j+i*i];
-               int exclude = prev[j];
-               cur[j] = min(include, exclude);
-           }
+           for(int j = n; j >= 0; j--) cur[j] = min((j + i*i <= n)? 1 + cur[j+i*i] : m, prev[j]);
            prev = cur;
        }
        return prev[0];
