@@ -1,20 +1,17 @@
 class Solution {
 public:
-    int n;
-    vector<int> dp;
-    bool cj(vector<int>& nums, int ind){
-        if(ind >= n - 1) return true;
-        if(dp[ind] != -1) return dp[ind];
-        bool f = false;
-        for(int i = nums[ind]; i >= 1; i--){
-            if(f == true) break;
-            f = cj(nums,ind+i);
-        }
-        return dp[ind] = f;
-    }
     bool canJump(vector<int>& nums) {
-        n = nums.size();
-        dp.resize(n, -1);
-        return cj(nums, 0);
+        int n = nums.size();
+        vector<int> dp(n+1, 0);
+        dp[n-1] = dp[n] = 1;
+        for(int i = n-2; i >= 0; i--){
+            bool f = false;
+            for(int j = nums[i]; j >= 1; j--){
+                if(f == true) break;
+                f = (i + j >= n-1)? true : dp[i+j];
+            }
+            dp[i] = f;   
+        }
+        return dp[0];
     }
 };
