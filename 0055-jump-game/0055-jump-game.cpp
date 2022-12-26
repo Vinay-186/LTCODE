@@ -1,9 +1,24 @@
 class Solution {
 public:
+    int n;
+    vector<int> dp;
+    bool cj(vector<int>& nums, int ind){
+        if(ind >= n-1 || ind + nums[ind] >= n-1) return true;
+        if(nums[ind] == 0) return false;
+        if(dp[ind] != -1) return dp[ind];
+        int m = nums[ind];
+        bool var = false;
+        for(int i = 1; i <= m;i++){
+            if(cj(nums, ind + i)){
+                var = true;
+                break;
+            }
+        } 
+        return dp[ind] = var;
+    }
     bool canJump(vector<int>& nums) {
-        int n = nums.size();
-        int lastPos = n - 1;
-        for (int i = n - 1; i >= 0; i--) if (i + nums[i] >= lastPos) lastPos = i;
-        return lastPos == 0;
+        n = nums.size();
+        dp.resize(n,-1);
+        return cj(nums, 0);
     }
 };
