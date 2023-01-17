@@ -2,19 +2,14 @@ class Solution {
 public:
     int minFlipsMonoIncr(string s) {
         int n = s.size();
-        vector<int> cur(2,0), prev(2,0);
+        int c0,c1,p0,p1;
+        p0 = p1 = 0;
         for(int i = n - 1; i >= 0; i--){
-            for(int j = 0 ; j <= 1; j++){
-                if(j == 0){
-                    if(s[i] == '0') cur[0] = prev[0];
-                    else cur[0] = min(1 + prev[0], prev[1]);
-                }else{
-                    if(s[i] == '0') cur[1] = 1 + prev[1];
-                    else cur[1] = prev[1];
-                }
-            }
-            prev = cur;
+            if(s[i] == '0') c0 = p0 , c1 = 1 + p1;
+            else c0 = min(1 + p0, p1), c1 = p1;
+            p0 = c0;
+            p1 = c1;
         }
-        return prev[0];
+        return p0;
     }
 };
