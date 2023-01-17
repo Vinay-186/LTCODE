@@ -2,7 +2,6 @@ class Solution {
 public:
     int minFlipsMonoIncr(string s) {
         int n = s.size();
-        vector<vector<int>> dp(n+1, vector<int>(2,0));
         vector<int> cur(2,0), prev(2,0);
         for(int i = n - 1; i >= 0; i--){
             for(int j = 0 ; j <= 1; j++){
