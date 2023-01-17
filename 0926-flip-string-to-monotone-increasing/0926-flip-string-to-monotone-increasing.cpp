@@ -1,15 +1,19 @@
 class Solution {
 public:
-    int n;
-    vector<vector<int>> dp;
-    int mfmi(string& s,int ind, int prev){
-        if(ind == n) return 0;
-        if(dp[ind][prev] != -1) return dp[ind][prev];
-        return dp[ind][prev] = (prev == 0)? ((s[ind] == '0')? mfmi(s,ind+1,0) : min(1 + mfmi(s,ind+1,0),mfmi(s,ind+1,1))) : ((s[ind] == '0')? 1 + mfmi(s,ind+1,1) : mfmi(s,ind+1,1));
-    }
     int minFlipsMonoIncr(string s) {
-        n = s.size();
-        dp.resize(n, vector<int>(2,-1));
-        return mfmi(s,0,0);
+        int n = s.size();
+        vector<vector<int>> dp(n+1, vector<int>(2,0));
+        for(int i = n - 1; i >= 0; i--){
+            for(int j = 0 ; j <= 1; j++){
+                if(j == 0){
+                    if(s[i] == '0') dp[i][0] = dp[i+1][0];
+                    else dp[i][0] = min(1 + dp[i+1][0], dp[i+1][1]);
+                }else{
+                    if(s[i] == '0') dp[i][1] = 1 + dp[i+1][1];
+                    else dp[i][1] = dp[i+1][1];
+                }
+            }
+        }
+        return dp[0][0];
     }
 };
