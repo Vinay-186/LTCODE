@@ -3,17 +3,19 @@ public:
     int minFlipsMonoIncr(string s) {
         int n = s.size();
         vector<vector<int>> dp(n+1, vector<int>(2,0));
+        vector<int> cur(2,0), prev(2,0);
         for(int i = n - 1; i >= 0; i--){
             for(int j = 0 ; j <= 1; j++){
                 if(j == 0){
-                    if(s[i] == '0') dp[i][0] = dp[i+1][0];
-                    else dp[i][0] = min(1 + dp[i+1][0], dp[i+1][1]);
+                    if(s[i] == '0') cur[0] = prev[0];
+                    else cur[0] = min(1 + prev[0], prev[1]);
                 }else{
-                    if(s[i] == '0') dp[i][1] = 1 + dp[i+1][1];
-                    else dp[i][1] = dp[i+1][1];
+                    if(s[i] == '0') cur[1] = 1 + prev[1];
+                    else cur[1] = prev[1];
                 }
             }
+            prev = cur;
         }
-        return dp[0][0];
+        return prev[0];
     }
 };
