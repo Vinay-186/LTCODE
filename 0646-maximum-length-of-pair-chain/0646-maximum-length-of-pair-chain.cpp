@@ -1,22 +1,18 @@
 class Solution {
 public:
-    int n;
-    vector<vector<int>> dp;
-    int flc(vector<vector<int>>& p, int ind,int prev){
-        if(ind == n) return 0;
-        if(dp[ind][prev] != -1) return dp[ind][prev];
-        int pick, notpick;
-        pick = notpick = INT_MIN;
-        if(prev == 0 || p[prev-1][1] < p[ind][0]){
-            pick = 1 + flc(p,ind+1,ind+1);
+    int findLongestChain(vector<vector<int>>& p) {
+        sort(p.begin(), p.end());
+        int n = p.size();
+        vector<vector<int>> dp(n+1,vector<int>(n+1,0));
+        for(int i = n-1; i >= 0; i--){
+            for(int j = n; j >= 0; j--){
+                int pick,notpick;
+                pick = notpick = INT_MIN;
+                if(j == 0 || p[j-1][1] < p[i][0]) pick = 1 + dp[i+1][i+1];
+                notpick = dp[i+1][j];
+                dp[i][j] = max(pick,notpick);
+            }
         }
-        notpick = flc(p,ind+1,prev);
-        return dp[ind][prev] = max(pick,notpick);
-    }
-    int findLongestChain(vector<vector<int>>& pairs) {
-        sort(pairs.begin(), pairs.end());
-        n = pairs.size();
-        dp.resize(n,vector<int>(n,-1));
-        return flc(pairs,0,0);
+        return dp[0][0];
     }
 };
