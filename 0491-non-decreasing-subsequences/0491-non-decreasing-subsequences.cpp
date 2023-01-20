@@ -18,8 +18,6 @@ public:
         vector<int> ans;
         n = nums.size();
         helper(nums, 0, ans);
-        vector<vector<int>> r;
-        r.insert(r.end(),res.begin(), res.end());
-        return r;
+        return vector(res.begin(),res.end());
     }
 };
