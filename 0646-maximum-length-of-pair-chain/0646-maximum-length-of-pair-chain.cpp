@@ -1,10 +1,13 @@
 class Solution {
 public:
+    static bool comp(const vector<int>& a, const vector<int>& b){
+        return (a[1] != b[1])? a[1] < b[1] : a[0] < b[0];
+    }
     int findLongestChain(vector<vector<int>>& p) {
-        sort(p.begin(), p.end());
-        int n = p.size();
-        vector<int> dp(n,1);
-        for(int i = 0; i < n; i++) for(int j = 0; j < i; j++) if(p[j][1] < p[i][0]) dp[i] = max(dp[i], 1 + dp[j]);
-        return *max_element(dp.begin(), dp.end());
+        sort(p.begin(), p.end(), comp);
+        int cur = INT_MIN;
+        int ans = 0;
+        for(auto& i : p) if(cur < i[0]) cur = i[1],ans++;
+        return ans;
     }
 };
