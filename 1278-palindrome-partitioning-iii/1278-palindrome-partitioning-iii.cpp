@@ -1,28 +1,28 @@
 class Solution {
 public:
-    int n; 
-    vector<vector<int>> dp, d;
-    int p(string& s, int i, int j){
-        if(i > j) return 0;
-        if(dp[i][j] != -1) return dp[i][j];
-        return  dp[i][j] = (s[i] == s[j])? p(s, i+1, j-1) : 1 + p(s, i+1, j-1);
-    }
-    int helper(string& s, int ind, int k){
-        if(k < 0) return 1e8;
-        if(ind == n){
-            if(k == 0) return 0;
-            return 1e8;
-        }
-        if(d[ind][k] != -1) return d[ind][k];
-        int mini = INT_MAX;
-        for(int i = ind; i < n;i++) mini = min(mini, p(s,ind, i) + helper(s,i+1,k-1));
-        return d[ind][k] = mini;
-    }
     int palindromePartition(string s, int k) {
-        n = s.size();
+        int n = s.size();
         if(n == k) return 0;
-        d.resize(n,vector<int>(k+1, -1));
-        dp.resize(n, vector<int>(n,-1));
-        return helper(s,0,k);
+        vector<vector<int>> d(n+1,vector<int>(k+1, 0));
+        vector<vector<int>> dp(n+1,vector<int>(n,0));
+        for(int i = n-1; i >= 0; i--){
+            for(int j = i+1; j < n; j++){
+                int t = dp[i+1][j-1];
+                dp[i][j] = (s[i] == s[j])? t : 1 + t;
+            }
+        }
+        for(int i = 1; i <= k; i++) d[n][i] = 1e8;
+        for(int i = n-1; i >= 0; i--){
+            for(int j = 0; j <= k;j++){
+                int mini = INT_MAX;
+                for(int t = i; t < n; t++){
+                    int cnt = (j==0)? 1e8 : dp[i][t] + d[t+1][j-1];
+                    mini = min(mini,cnt);
+                }
+                d[i][j] = mini;
+            }
+            
+        }
+        return d[0][k];
     }
 };
