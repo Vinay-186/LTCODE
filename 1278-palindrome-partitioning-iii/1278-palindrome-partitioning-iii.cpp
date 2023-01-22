@@ -15,10 +15,7 @@ public:
         }
         if(d[ind][k] != -1) return d[ind][k];
         int mini = INT_MAX;
-        for(int i = ind; i < n;i++){
-            int cnt = p(s,ind, i) + helper(s,i+1,k-1);
-            mini = min(mini, cnt);
-        }
+        for(int i = ind; i < n;i++) mini = min(mini, p(s,ind, i) + helper(s,i+1,k-1));
         return d[ind][k] = mini;
     }
     int palindromePartition(string s, int k) {
