@@ -1,18 +1,17 @@
 class Solution {
 public:
-    int n;
-    vector<int> dp;
-    int j(vector<int>& nums, int ind){
-        if(ind >= n-1) return 0;
-        if(nums[ind] == 0) return 1e8;
-        if(dp[ind] != -1) return dp[ind];
-        int mini = 1e8;
-        for(int i = ind+nums[ind]; i >= ind+1; i--) mini = min(mini, 1 + j(nums, i));
-        return dp[ind] = mini;
-    }
     int jump(vector<int>& nums) {
-       n = nums.size();
-       dp.resize(n,-1);
-       return j(nums,0);
+       int n = nums.size();
+       vector<int> dp(n,1e8);
+       dp[n-1] = 0;
+       for(int i = n-2; i >= 0; i--){
+          if(nums[i] == 0) continue;
+          else{
+                int mini = 1e8;
+                for(int j = i + nums[i]; j >= i + 1; j--) mini = min(mini,(j < n)? 1 + dp[j] : 1);
+                dp[i] = mini;
+           }
+       }
+       return dp[0];
     }
 };
