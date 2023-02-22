@@ -1,41 +1,24 @@
 class Solution {
 public:
-    int n, days, w;
-    bool ok(vector<int>& warr,int cur,int ind){
-        if(cur > days) return false;
-        if(ind == n){
-            if(cur <= days) return true;
-            return false;
-        }
-        int sum = 0;
-        for(int i = ind; i <= n; i++){
-            if(i == n){
-                return ok(warr, cur+1, i);
-            }
-            if(sum + warr[i] > w){
-                if(ok(warr,cur+1,i)){
-                    return true;
-                }
-                break;
-            }else{
-                sum += warr[i];
+    bool ok(vector<int>& warr,int w, int days){
+        int cur_sum = 0, cur_days = 1;
+        for(int& i : warr){
+            cur_sum += i;
+            if(cur_sum > w){
+                cur_days++;
+                cur_sum = i;
             }
         }
-        return false;
+        return cur_days <= days;
     }
     int shipWithinDays(vector<int>& weights, int days) {
-        this->days = days;
-        n = weights.size();
-        int sum = accumulate(weights.begin(), weights.end(), 0);
-        int l = sum / days;
-        int h = sum;
-        while(l < h){
-            w = l + (h - l) / 2;
-            if(ok(weights,0,0)){
-                h = w;
-            }else{
-                l = w+1;
-            }
+        int n = weights.size();
+        int l = *max_element(weights.begin(), weights.end());
+        int r = accumulate(weights.begin(), weights.end(), 0);
+        while(l < r){
+            int w = l + (r - l) / 2;
+            if(ok(weights,w,days)) r = w;
+            else l = w+1;
         }
         return l;
     }
