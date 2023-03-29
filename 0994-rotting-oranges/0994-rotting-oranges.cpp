@@ -14,13 +14,11 @@ public:
         int min = 0;
         while(!q.empty()){
             if(count == 0) return min;
-            q.push({-1,-1});
             int sz = q.size();
             for(int i = 0; i < sz; i++){
                 auto nd = q.front();
                 q.pop();
                 int x = nd.first, y = nd.second;
-                if(x == -1 && y == -1) continue;
                 if(x-1 >= 0 && g[x-1][y] == 1){
                     q.push({x-1,y});
                     g[x-1][y] = 2;
