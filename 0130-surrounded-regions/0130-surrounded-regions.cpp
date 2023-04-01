@@ -1,37 +1,35 @@
 class Solution {
 public:
+    vector<vector<int>> vis;
+    int m, n;
+    int delrow[4] = {-1,+1,0,0};
+    int delcol[4] = {0,0,-1,1};
+    void dfs(int i, int j, vector<vector<char>>& b){
+        vis[i][j] = 1;
+        for(int t = 0; t < 4; t++){
+            int nrow = i + delrow[t];
+            int ncol = j + delcol[t];
+            if(nrow >= 0 && nrow < m && ncol >= 0 && ncol < n && !vis[nrow][ncol] && b[nrow][ncol] == 'O'){
+                dfs(nrow, ncol, b);
+            }
+        }
+    }
     void solve(vector<vector<char>>& board) {
-        int m = board.size();
-        int n = board[0].size();
-        queue<pair<int,int>> q;
-        map<pair<int,int>, int> o;
-        vector<vector<int>> vis(m, vector<int>(n,0));
+        m = board.size();
+        n = board[0].size();
+        vis.assign(m, vector<int>(n,0));
+        for(int j = 0; j < n; j++){
+            if(!vis[0][j] && board[0][j] == 'O') dfs(0,j, board);
+            if(!vis[m-1][j] && board[m-1][j] == 'O') dfs(m-1, j, board);
+        }
+        for(int i = 0; i < m ; i++){
+            if(!vis[i][0] && board[i][0] == 'O') dfs(i,0,board);
+            if(!vis[i][n-1] && board[i][n-1] == 'O') dfs(i,n-1, board);
+        }
         for(int i = 0; i < m ;i++){
             for(int j = 0; j < n; j++){
-                if(i == 0 || j == 0 || i == m-1 || j == n-1){
-                    if(board[i][j] == 'O') q.push({i,j}), vis[i][j] = 1;
-                }else if(i > 0 && j > 0 && board[i][j] == 'O'){
-                    o[{i,j}] = 1;
-                }
+                if(board[i][j] == 'O' && !vis[i][j]) board[i][j] = 'X';
             }
-        }
-        int delrow[] = {-1,1,0,0};
-        int delcol[] = {0,0,-1,1};
-        while(!q.empty()){
-            auto [x,y]= q.front();
-            q.pop();
-            for(int j = 0; j < 4; j++){
-                int nrow = x + delrow[j];
-                int ncol = y + delcol[j];
-                if(nrow >= 0 && nrow < m && ncol >= 0 && ncol < n && !vis[nrow][ncol] && board[nrow][ncol] == 'O'){
-                    vis[nrow][ncol] = 1;
-                    q.push({nrow,ncol});
-                    o[{nrow,ncol}] = 0;
-                }
-            }
-        }
-        for(auto& i : o){
-            if(i.second == 1) board[i.first.first][i.first.second] = 'X';
         }
     }
 };
