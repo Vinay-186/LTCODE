@@ -18,18 +18,15 @@ public:
         int delrow[] = {-1,1,0,0};
         int delcol[] = {0,0,-1,1};
         while(!q.empty()){
-            int sz = q.size();
-            for(int i = 0; i < sz; i++){
-                auto [x,y]= q.front();
-                q.pop();
-                for(int j = 0; j < 4; j++){
-                    int nrow = x + delrow[j];
-                    int ncol = y + delcol[j];
-                    if(nrow >= 0 && nrow < m && ncol >= 0 && ncol < n && !vis[nrow][ncol] && board[nrow][ncol] == 'O'){
-                        vis[nrow][ncol] = 1;
-                        q.push({nrow,ncol});
-                        o[{nrow,ncol}] = 0;
-                    }
+            auto [x,y]= q.front();
+            q.pop();
+            for(int j = 0; j < 4; j++){
+                int nrow = x + delrow[j];
+                int ncol = y + delcol[j];
+                if(nrow >= 0 && nrow < m && ncol >= 0 && ncol < n && !vis[nrow][ncol] && board[nrow][ncol] == 'O'){
+                    vis[nrow][ncol] = 1;
+                    q.push({nrow,ncol});
+                    o[{nrow,ncol}] = 0;
                 }
             }
         }
