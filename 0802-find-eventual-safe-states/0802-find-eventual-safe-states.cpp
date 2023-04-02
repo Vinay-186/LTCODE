@@ -4,7 +4,7 @@ public:
     bool dfs(int ind, vector<vector<int>>& g, vector<int>& vis, vector<int>& path){
         vis[ind] = 1;
         path[ind] = 1;
-        safe[ind] = 0;
+        // safe[ind] = 0;
         for(int& i : g[ind]){
             if(!vis[i] && dfs(i,g,vis,path) == true) {
                 safe[ind] = 0;
