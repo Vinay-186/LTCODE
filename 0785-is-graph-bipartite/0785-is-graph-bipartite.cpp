@@ -1,18 +1,14 @@
 class Solution {
 public:
-    bool bfs(int ind, vector<vector<int>>& adj, vector<int>& color){
-        queue<int> q;
-        color[ind] = 0;
-        q.push(ind);
-        while(!q.empty()){
-            int node = q.front();
-            q.pop();
-            for(int& i : adj[node]){
-                if(color[i] == -1){
-                    color[i] = !color[node];
-                    q.push(i);
-                }else if(color[i] == color[node]) return false;
-            }
+    bool dfs(int ind ,int par, vector<vector<int>>& adj, vector<int>& color){
+        if(par == -1) color[ind] = 0;
+        else color[ind] = !color[par];
+        
+        for(int& i : adj[ind]){
+            if(i == par) continue;
+            if(color[i] == -1){
+               if(!dfs(i, ind, adj, color)) return false;
+            }else if(color[i] == color[ind]) return false;
         }
         return true;
     }
@@ -21,7 +17,7 @@ public:
         vector<int> color(n, -1);
         for(int i = 0; i < n; i++){
             if(color[i] == -1){
-                if(bfs(i, adj, color) == false) return false;   
+                if(dfs(i, -1, adj, color) == false) return false;   
             }
         }
         return true;
