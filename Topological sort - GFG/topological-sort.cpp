@@ -21,7 +21,7 @@ class Solution
 	    stack<int> ans;
 	    vector<int> vis(V,0);
 	    vector<int> res;
-	    for(int i = 0; i < V; i++){
+	    for(int i = V-1; i >= 0; i--){
 	        if(!vis[i]){
 	            dfs(i, adj, vis, ans);
 	        }
