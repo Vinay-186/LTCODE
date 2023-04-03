@@ -1,37 +1,32 @@
 class Solution {
 public:
-    vector<int> safe;
-    bool dfs(int ind, vector<vector<int>>& g, vector<int>& vis, vector<int>& path){
-        vis[ind] = 1;
-        path[ind] = 1;
-        // safe[ind] = 0;
-        for(int& i : g[ind]){
-            if(!vis[i] && dfs(i,g,vis,path) == true) {
-                safe[ind] = 0;
-                return true;
-            }else if(path[i]){
-                safe[ind] = 0;
-                return true;
-            }
-        }
-        path[ind] = 0;
-        safe[ind] = 1;
-        return false;
-    }
     vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
         int n = graph.size();
-        safe.assign(n,0);
-        vector<int> vis(n,0);
-        vector<int> path(n,0);
-        vector<int> ans;
+        vector<vector<int>> adj(n,vector<int>(0));
         for(int i = 0; i < n; i++){
-            if(!vis[i]){
-                dfs(i,graph, vis, path);
+            for(int j : graph[i]){
+                adj[j].push_back(i);
             }
         }
+        vector<int> indeg(n, 0);
         for(int i = 0; i < n; i++){
-            if(safe[i] == 1) ans.push_back(i);
+            for(int j : adj[i]) indeg[j]++;
         }
-        return ans;
+        queue<int> q;
+        vector<int> topo;
+        for(int i = 0; i < n; i++){
+            if(!indeg[i]) q.push(i);
+        }
+        while(!q.empty()){
+            int node = q.front();
+            q.pop();
+            topo.push_back(node);
+            for(int i : adj[node]){
+                if(--indeg[i] == 0) q.push(i);
+            }
+        }
+        
+        sort(topo.begin(), topo.end());
+        return topo;
     }
 };
