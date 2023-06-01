@@ -1,32 +1,31 @@
 class Solution {
 public:
-    int n;
-    set<string> check;
-    void permute(string& s, queue<pair<string, int>>& q, int lev){
-        for(int i = 0; i < n; i++){
-            for(char c = 'a'; c <= 'z'; c++){
-                if(s[i] == c) continue;
-                string lastpart = (i+1 < n)? s.substr(i+1) : "";
-                string temp = s.substr(0,i) + c + lastpart;
-                set<string>::iterator iter = check.find(temp);
-                if(iter != check.end()){
-                    q.push({temp, lev+1});
-                    check.erase(iter);
+    int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
+        set<string> st;
+        st.insert(wordList.begin(), wordList.end());
+        set<string>:: iterator iter = st.find(beginWord);
+        if(iter != st.end()){
+            st.erase(iter);
+        }
+        queue<pair<string,int>> q;
+        q.push({beginWord, 1});        
+        while(!q.empty()){
+            auto [node, lvl] = q.front();
+            q.pop();
+            if(node == endWord){
+                return lvl;
+            }
+            for(int i = 0; i < node.size(); i++){
+                for(char c = 'a'; c <= 'z'; c++){
+                    if(node[i] == c) continue;
+                    string temp = node.substr(0, i) + c + node.substr(i+1);
+                    iter = st.find(temp);
+                    if(iter != st.end()){
+                        q.push({temp, lvl+1});
+                        st.erase(iter);
+                    }
                 }
             }
-        }
-    }
-    int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
-        n = beginWord.size();
-        check.insert(wordList.begin(), wordList.end());
-        if(check.find(beginWord) != check.end()) check.erase(check.find(beginWord));
-        queue<pair<string, int>> q;
-        q.push({beginWord, 1});
-        while(!q.empty()){
-            auto [node, lev] = q.front();
-            q.pop();
-            if(node == endWord) return lev;
-            permute(node, q, lev);
         }
         return 0;
     }
