@@ -23,14 +23,10 @@ class Solution {
                 }
             }
         }
-        vector<int> og_res = dist;
         for(vector<int>& edge : edges){
             if(dist[edge[0]] + edge[2] < dist[edge[1]]){
-                dist[edge[1]] = dist[edge[0]] + edge[2];
+                return {-1};
             }
-        }
-        for(int i = 0; i < V; i++){
-            if(og_res[i] != dist[i]) return {-1};
         }
         return dist;
     }
