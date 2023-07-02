@@ -10,7 +10,7 @@ public:
         }
         for(int i = 0; i < k; i++){
             child[i] += cookies[ind];
-            helper(cookies, ind+1, k);
+            if(child[i] < mini) helper(cookies, ind+1, k);
             child[i] -= cookies[ind];
         }
     }
