@@ -12,6 +12,7 @@ public:
             child[i] += cookies[ind];
             if(child[i] < mini) helper(cookies, ind+1, k);
             child[i] -= cookies[ind];
+            if(child[i] == 0) break;
         }
     }
     int distributeCookies(vector<int>& cookies, int k) {
