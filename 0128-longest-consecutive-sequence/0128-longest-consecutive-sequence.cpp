@@ -7,12 +7,10 @@ public:
         int ans = 1;
         for(int num : nums){
             if(st.find(num-1) != st.end()) continue;
-            else{
-                int cnt = 1;
-                while(st.find(++num) != st.end()) cnt++;
-                ans = max(ans, cnt);
-                cnt = 0;
-            }
+            int cnt = 1;
+            while(st.find(++num) != st.end()) cnt++;
+            ans = max(ans, cnt);
+            cnt = 0;
         }
         return ans;
     }
