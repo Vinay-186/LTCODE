@@ -8,7 +8,7 @@ public:
         }
         for(int i = idx; i< n; i++){
             if(i != idx && nums[i] == nums[i-1]) continue;
-            if(sum > target) continue;
+            if(sum > target) break;
             sum += nums[i];
             curr.push_back(nums[i]);
             helper(nums, i+1, n, target, sum, curr, res);
