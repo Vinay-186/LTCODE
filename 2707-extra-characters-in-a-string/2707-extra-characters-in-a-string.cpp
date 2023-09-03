@@ -9,8 +9,9 @@ public:
             int use , dontUse;
             use = dontUse = 1e8;
             dontUse = 1 + dp[i+1];
+            string subStr;
             for(int j = i; j < n; j++){
-                string subStr = s.substr(i, j - i + 1);
+                subStr += s[j];
                 if(st.find(subStr) == st.end()) continue;
                 use = min(use, dp[j+1]);
             }
