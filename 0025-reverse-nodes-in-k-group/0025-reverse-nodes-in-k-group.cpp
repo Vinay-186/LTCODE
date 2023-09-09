@@ -10,28 +10,36 @@
  */
 class Solution {
 public:
+    ListNode* successor = NULL;
+    ListNode* tail = NULL;
+    ListNode* reverseN(ListNode* head, int n){
+        if(n == 1){
+            successor = head->next;
+            return head;
+        }
+        ListNode* last = reverseN(head->next, n-1);
+        head->next->next = head;
+        head->next = successor;
+        tail = head;
+        return last;
+    }
+    
     ListNode* reverseKGroup(ListNode* head, int k) {
         if(k == 1) return head;
-        ListNode *dummy = new ListNode(0);
-        dummy->next = head;
-        ListNode *cur = dummy, *nex = dummy, *pre = dummy;
-        int cnt = 0;
-        while(cur->next != NULL){
-            cur = cur->next;
-            cnt++;
-        }
-        while(cnt >= k){
-            cur = pre->next;
-            nex = cur->next;
-            for(int i = 1; i < k; i++){
-                cur->next = nex->next;
-                nex->next = pre->next;
-                pre->next = nex;
-                nex = cur->next;
+        int n = 0;
+        for(ListNode* i = head; i != NULL; i = i->next) n++;
+        ListNode* newHead = NULL, *next_tail;
+        while(n >= k){
+            if(newHead == NULL) {
+                newHead = reverseN(head, k);
+                next_tail = tail;
+            }else {
+                ListNode* temp = reverseN(successor, k);
+                next_tail->next = temp;
+                next_tail = tail;
             }
-            pre = cur;
-            cnt -= k;
+            n-= k;
         }
-        return dummy->next;
+        return newHead;
     }
 };
