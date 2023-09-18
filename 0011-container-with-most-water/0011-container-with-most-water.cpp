@@ -7,7 +7,7 @@ public:
         while(left < right){
             int width = right - left;
             maxi = max(maxi, width * min(height[left], height[right]));
-            (height[left] <= height[right])? left++ : right--;
+            (height[left] < height[right])? left++ : right--;
         }
         return maxi;
     }
