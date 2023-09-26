@@ -1,12 +1,8 @@
 class Solution {
 public:
-    char findTheDifference(string s, string t) {
-        vector<int> s_freq(26,0);
-        for(char c : s) s_freq[c-'a']++;
-        for(char c : t){
-            if(s_freq[c-'a'] == 0) return c;
-            s_freq[c-'a']--;
-        }
-        return '-';
+    char findTheDifference(string s, string t) 
+    {
+      for(int i=0;i<s.size();i++) t[i+1]+=t[i]-s[i];
+      return t[t.size()-1];
     }
 };
